@@ -2,13 +2,19 @@
 
 const config = {
     type: Phaser.AUTO,
-    width: 800,
-    height: 600,
-    scene: [Load],
+    width: 1200,
+    height: 900,
+    scene: [Load, WorldTestScene],
     scale: {
         mode: Phaser.Scale.NONE,
         autoCenter: Phaser.Scale.CENTER_BOTH
     },
+    physics: {
+        default: "arcade",
+        arcade: {
+            debug: true,
+        }
+    }
 }
 
 const game = new Phaser.Game(config)
