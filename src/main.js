@@ -4,7 +4,7 @@ const config = {
     type: Phaser.AUTO,
     width: 800,
     height: 600,
-    scene: [Load],
+    scene: [Load, Menu, LevelTen, LevelFinal],
     scale: {
         mode: Phaser.Scale.NONE,
         autoCenter: Phaser.Scale.CENTER_BOTH
@@ -13,5 +13,6 @@ const config = {
 
 const game = new Phaser.Game(config)
 
-let width = game.config.width, height = game.config.height;
-
+// define global variables
+let width = game.config.width, height = game.config.height
+let centerX = width/2, centerY = height/2

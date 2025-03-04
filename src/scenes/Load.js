@@ -4,13 +4,97 @@ class Load extends Phaser.Scene {
     }
 
     preload() {
-        // TODO: load assets
+        // loadingbar
+        let loadingBar = this.add.graphics()
+        this.load.on('progress', (value) => {
+            loadingBar.clear()
+            loadingBar.fillStyle(0xffffff, 1)
+            loadingBar.fillRect(0, centerY, width * value, 5)
+        })
+        this.load.on('complete', () => {
+            loadingBar.destroy()
+        })
+        
+        // load assets
+        this.load.path = './assets/'
+        this.load.spritesheet('animatetest', 'sprites/animationtest.png', {
+            frameWidth: 12,
+            frameHeight: 12,
+        })
     }
 
     create() {
         // TODO: load main menu scene from here
 
-        console.log("Hello!");
+        // THUG animations
+        // idle
+        this.anims.create({
+            key: 'idle-left',
+            frameRate: 12,
+            repeat: -1,
+            frames: this.anims.generateFrameNumbers('animatetest', { start: 0, end: 2})
+        })
+        this.anims.create({
+            key: 'idle-right',
+            frameRate: 12,
+            repeat: -1,
+            frames: this.anims.generateFrameNumbers('animatetest', { start: 3, end: 5})
+        })
+        // walk
+        this.anims.create({
+            key: 'walk-left',
+            frameRate: 12,
+            repeat: -1,
+            frames: this.anims.generateFrameNumbers('animatetest', { start: 6, end: 8})
+        })
+        this.anims.create({
+            key: 'walk-right',
+            frameRate: 12,
+            repeat: -1,
+            frames: this.anims.generateFrameNumbers('animatetest', { start: 9, end: 11})
+        })
+        // attack
+        this.anims.create({
+            key: 'attack-left',
+            frameRate: 12,
+            repeat: -1,
+            frames: this.anims.generateFrameNumbers('animatetest', { start: 12, end: 14})
+        })
+        this.anims.create({
+            key: 'attack-right',
+            frameRate: 12,
+            repeat: -1,
+            frames: this.anims.generateFrameNumbers('animatetest', { start: 15, end: 17})
+        })
+        // hurt
+        this.anims.create({
+            key: 'hurt-left',
+            frameRate: 12,
+            repeat: -1,
+            frames: this.anims.generateFrameNumbers('animatetest', { start: 18, end: 20})
+        })
+        this.anims.create({
+            key: 'hurt-right',
+            frameRate: 12,
+            repeat: -1,
+            frames: this.anims.generateFrameNumbers('animatetest', { start: 21, end: 23})
+        })
+        // defeat
+        this.anims.create({
+            key: 'defeat-left',
+            frameRate: 12,
+            repeat: -1,
+            frames: this.anims.generateFrameNumbers('animatetest', { start: 24, end: 26})
+        })
+        this.anims.create({
+            key: 'defeat-right',
+            frameRate: 12,
+            repeat: -1,
+            frames: this.anims.generateFrameNumbers('animatetest', { start: 27, end: 29})
+        })
+
+        // got to Menu scene
+        this.scene.start('menuScene')
     }
 
     update() {
