@@ -23,7 +23,7 @@ class Thug extends Phaser.Physics.Arcade.Sprite {
     }
 
     // thug AI
-    brain(scene, currentX, currentY , direction, targetX, targetY) {
+    facePlayer(currentX, direction, targetX) {
         if(direction == 'left' && currentX < targetX){
             direction = 'right'
         } else if (direction == 'right' && currentX > targetX) {
@@ -34,9 +34,11 @@ class Thug extends Phaser.Physics.Arcade.Sprite {
 
 // thug-specific state classes
 class IdleState extends State {
-    enter(scene, thug) {}
-
-    execute(scene, thug) {}
+    enter(scene, thug) {
+        thug.setVelocity(0)
+        thug.anims.play(`idle-${thug.direction}`)
+        thug.anims.stop()
+    }
 }
 
 class WalkState extends State {

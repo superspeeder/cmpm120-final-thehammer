@@ -15,8 +15,15 @@ class Load extends Phaser.Scene {
             loadingBar.destroy()
         })
         
-        // load assets
+        // LOAD ASSETS
         this.load.path = './assets/'
+        // load audio
+        // load fonts
+        this.load.font('header', 'font/AlteHaasGroteskRegular.ttf')
+        this.load.font('headerBold', 'font/AlteHaasGroteskBold.ttf')
+        this.load.font('pixel', 'font/Square.ttf')
+        this.load.font('clearPixel', 'font/Squareo.ttf')
+        // load sprites
         this.load.spritesheet('animatetest', 'sprites/animationtest.png', {
             frameWidth: 12,
             frameHeight: 12,
@@ -24,8 +31,6 @@ class Load extends Phaser.Scene {
     }
 
     create() {
-        // TODO: load main menu scene from here
-
         // THUG animations
         // idle
         this.anims.create({
@@ -93,7 +98,7 @@ class Load extends Phaser.Scene {
             frames: this.anims.generateFrameNumbers('animatetest', { start: 27, end: 29})
         })
 
-        // got to Menu scene
+        // go to Menu scene
         this.scene.start('menuScene')
     }
 
