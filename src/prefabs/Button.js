@@ -18,9 +18,9 @@ class Button extends Phaser.GameObjects.Text {
 
         // Click action with sound
         this.on('pointerdown', () => {
-            if(sfxOn){
-                scene.sound.play('buttonClick')
-            }
+            // if(sfxOn){
+            //     scene.sound.play('buttonClick')
+            // }
             callback()
         });
 
