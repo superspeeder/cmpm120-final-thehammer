@@ -8,14 +8,14 @@ class Player extends Phaser.Physics.Arcade.Sprite {
      * @param {Phaser.Physics.Arcade.Sprite[]} enemies 
      */
     constructor(scene, x, y, cursorKeys, enemies) {
-        super(scene, x, y, "playerSprite")
+        super(scene, x, y, "playerSprite", "IdleRight")
         scene.add.existing(this)
         scene.physics.add.existing(this)
         this.cursorKeys = cursorKeys
 
         this.body.setCollideWorldBounds(true)
         this.setOrigin(0.5, 1.0)
-        this.body.setSize(this.width, 30).setOffset(0.0, this.height - 30.0)
+        this.body.setSize(34, 48).setOffset((this.width - 34) / 2.0, this.height - 48.0)
 
         this.SPEED = 200
         this.VERTICAL_SPEED = 200

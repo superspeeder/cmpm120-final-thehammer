@@ -1,0 +1,99 @@
+{ "frames": {
+   "player1 0.ase": {
+    "frame": { "x": 0, "y": 0, "w": 128, "h": 128 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 128, "h": 128 },
+    "sourceSize": { "w": 128, "h": 128 },
+    "duration": 100
+   },
+   "player1 1.ase": {
+    "frame": { "x": 128, "y": 0, "w": 128, "h": 128 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 128, "h": 128 },
+    "sourceSize": { "w": 128, "h": 128 },
+    "duration": 100
+   },
+   "player1 2.ase": {
+    "frame": { "x": 256, "y": 0, "w": 128, "h": 128 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 128, "h": 128 },
+    "sourceSize": { "w": 128, "h": 128 },
+    "duration": 100
+   },
+   "player1 3.ase": {
+    "frame": { "x": 384, "y": 0, "w": 128, "h": 128 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 128, "h": 128 },
+    "sourceSize": { "w": 128, "h": 128 },
+    "duration": 100
+   },
+   "player1 4.ase": {
+    "frame": { "x": 512, "y": 0, "w": 128, "h": 128 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 128, "h": 128 },
+    "sourceSize": { "w": 128, "h": 128 },
+    "duration": 100
+   },
+   "player1 5.ase": {
+    "frame": { "x": 640, "y": 0, "w": 128, "h": 128 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 128, "h": 128 },
+    "sourceSize": { "w": 128, "h": 128 },
+    "duration": 100
+   },
+   "player1 6.ase": {
+    "frame": { "x": 768, "y": 0, "w": 128, "h": 128 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 128, "h": 128 },
+    "sourceSize": { "w": 128, "h": 128 },
+    "duration": 100
+   },
+   "player1 7.ase": {
+    "frame": { "x": 896, "y": 0, "w": 128, "h": 128 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 128, "h": 128 },
+    "sourceSize": { "w": 128, "h": 128 },
+    "duration": 100
+   }
+ },
+ "meta": {
+  "app": "https://www.aseprite.org/",
+  "version": "1.3.12-x64",
+  "image": "player1.png",
+  "format": "RGBA8888",
+  "size": { "w": 1024, "h": 128 },
+  "scale": "1",
+  "frameTags": [
+   { "name": "WalkLeft", "from": 0, "to": 1, "direction": "forward", "color": "#000000ff" },
+   { "name": "IdleLeft", "from": 0, "to": 0, "direction": "forward", "color": "#000000ff" },
+   { "name": "LeftPunch", "from": 2, "to": 3, "direction": "forward", "color": "#000000ff" },
+   { "name": "WalkRight", "from": 4, "to": 5, "direction": "forward", "color": "#000000ff" },
+   { "name": "IdleRight", "from": 4, "to": 4, "direction": "forward", "color": "#000000ff" },
+   { "name": "RightPunch", "from": 6, "to": 7, "direction": "forward", "color": "#000000ff" }
+  ],
+  "layers": [
+   { "name": "Shadow", "opacity": 255, "blendMode": "normal" },
+   { "name": "Lower Body", "opacity": 255, "blendMode": "normal" },
+   { "name": "FrontLeg", "opacity": 255, "blendMode": "normal" },
+   { "name": "Lower Arm", "opacity": 255, "blendMode": "normal" },
+   { "name": "Torso", "opacity": 255, "blendMode": "normal" },
+   { "name": "Shirt", "opacity": 255, "blendMode": "normal" },
+   { "name": "Head", "opacity": 255, "blendMode": "normal" },
+   { "name": "Mouth", "opacity": 255, "blendMode": "normal" },
+   { "name": "Eyes", "opacity": 255, "blendMode": "normal" },
+   { "name": "Nose", "opacity": 255, "blendMode": "normal" },
+   { "name": "Hair", "opacity": 255, "blendMode": "normal" },
+   { "name": "Upper Arm", "opacity": 255, "blendMode": "normal" }
+  ],
+  "slices": [
+  ]
+ }
+}

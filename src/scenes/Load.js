@@ -5,8 +5,11 @@ class Load extends Phaser.Scene {
 
     preload() {
         // TODO: load assets
-        this.load.image("playerSprite", "assets/textures/playerSprite.png")
+        // this.load.image("playerSprite", "assets/textures/playerSprite.png")
+        this.load.aseprite("playerSprite", "assets/textures/player1.png", "assets/textures/player1.json")
         this.load.image("sampleEnemySprite", "assets/textures/sampleEnemySprite.png")
+
+        this.anims.createFromAseprite("playerSprite")
     }
 
     create() {
