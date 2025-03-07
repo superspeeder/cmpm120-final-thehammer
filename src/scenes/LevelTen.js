@@ -8,13 +8,16 @@ class LevelTen extends Phaser.Scene {
     preload() {}
 
     create() {
-        this.player = this.physics.add.sprite(centerX, centerY, 'animateTest')
-        this.thug = this.physics.add.sprite(0, 0, 'animateTest', 0, 'left')
+        this.player = this.add.rectangle(centerX, centerY, 10, 10, 0xffffff)
+
+        this.enemies = this.add.group()
+        this.thug = new Thug(this, 0, 0, 'animateTest', this.player)
+        this.enemies.add(this.thug)
     }
 
     update() {
-        // this.thug.facePlayer(this.thug.x, this.thug.direction, this.player.x)
-        this.enemyFollows()
+        // step(update) state machines
+        this.thugFSM.step()
     }
 
     enemyFollows() {
