@@ -7,6 +7,7 @@ class Load extends Phaser.Scene {
         // TODO: load assets
         this.load.aseprite("playerSprite", "assets/textures/player1.png", "assets/textures/player1.json")
         this.load.image("sampleEnemySprite", "assets/textures/sampleEnemySprite.png")
+        this.load.image("level10", "assets/textures/level10.png")
         
     }
 
@@ -18,7 +19,7 @@ class Load extends Phaser.Scene {
         this.anims.get("WalkRight").repeat = -1;
 
         console.log("Hello!");
-        this.scene.switch("worldTestScene")
+        this.scene.switch("level10")
     }
 
     update() {

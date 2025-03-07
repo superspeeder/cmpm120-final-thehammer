@@ -4,7 +4,7 @@ const config = {
     type: Phaser.AUTO,
     width: 1200,
     height: 900,
-    scene: [Load, WorldTestScene],
+    scene: [Load, Level10],
     scale: {
         mode: Phaser.Scale.NONE,
         autoCenter: Phaser.Scale.CENTER_BOTH
