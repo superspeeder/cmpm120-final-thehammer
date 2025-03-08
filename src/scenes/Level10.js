@@ -17,6 +17,23 @@ class Level10 extends Phaser.Scene {
 
         this.worldUpperLimit = this.physics.add.staticBody(0.0, 0.0, game.config.width, game.config.height / 2.0)
         this.physics.add.collider(this.player, this.worldUpperLimit)
+
+
+        // TODO: replace this with bitmap text
+        let textConfig = {
+            fontFamily: "Helvetica",
+            fontSize: "24px",
+            backgroundColor: "white",
+            fixedWidth: 80,
+            color: "black",
+            align: "right",
+        }
+
+        this.pointsDisplay = this.add.text(game.config.width - 110, 30, "0", textConfig)
+
+        this.player.on("playerpointschanged", (/** @type {integer} */ points) => {
+            this.pointsDisplay.setText(points.toString)
+        })
     }
 
     update() {

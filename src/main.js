@@ -21,3 +21,4 @@ const game = new Phaser.Game(config)
 
 let width = game.config.width, height = game.config.height;
 
+const PLAYER_MAX_HEALTH = 100;

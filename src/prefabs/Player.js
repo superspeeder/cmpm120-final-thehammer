@@ -38,6 +38,9 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             PunchRight: new PunchState("Right"),
             PunchLeft: new PunchState("Left"),
         }, [this, scene]);
+
+        this.health = PLAYER_MAX_HEALTH
+        this.points = 0
     }
 
     update() {
@@ -54,6 +57,25 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 coll.enemy.setDepth(BELOW_LAYER)
             }
         }
+    }
+
+    hurt(hp) {
+        this.health -= hp
+        if (this.health <= 0) {
+            // TODO: game over
+        }
+
+        // TODO: play a sound when the player gets hurt
+    }
+
+    setPoints(points) {
+        let oldpoints = this.points
+        this.points = points
+        this.emit("playerpointschanged", this.points, this, oldpoints)
+    }
+
+    addPoints(points) {
+        this.setPoints(this.points + points)        
     }
 }
 
