@@ -8,6 +8,7 @@ class Load extends Phaser.Scene {
         this.load.aseprite("playerSprite", "assets/textures/player1.png", "assets/textures/player1.json")
         this.load.image("sampleEnemySprite", "assets/textures/sampleEnemySprite.png")
         this.load.image("level10", "assets/textures/level10.png")
+        this.load.image("rock", "assets/textures/rock.png")
         
     }
 

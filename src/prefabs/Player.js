@@ -49,9 +49,9 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         for (let i = 0 ; i < this.enemyColliders.length ; i++) {
             let coll = this.enemyColliders[i];
             if (coll.enemy.y > this.y) {
-                this.setBelow(coll.enemy)
+                coll.enemy.setDepth(ABOVE_LAYER)
             } else {
-                this.setAbove(coll.enemy)
+                coll.enemy.setDepth(BELOW_LAYER)
             }
         }
     }
@@ -153,3 +153,6 @@ class PunchState extends State {
         })
     }
 }
+
+const ABOVE_LAYER = 1
+const BELOW_LAYER = -1
