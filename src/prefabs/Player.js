@@ -31,12 +31,12 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.punchKey = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.C)
 
         this.stateMachine = new StateMachine("IdleRight", {
-            IdleRight: new IdleState("Right"),
-            IdleLeft: new IdleState("Left"),
-            WalkRight: new WalkState("Right"),
-            WalkLeft: new WalkState("Left"),
-            PunchRight: new PunchState("Right"),
-            PunchLeft: new PunchState("Left"),
+            IdleRight: new PlayerIdleState("Right"),
+            IdleLeft: new PlayerIdleState("Left"),
+            WalkRight: new PlayerWalkState("Right"),
+            WalkLeft: new PlayerWalkState("Left"),
+            PunchRight: new PlayerPunchState("Right"),
+            PunchLeft: new PlayerPunchState("Left"),
         }, [this, scene]);
 
         this.health = PLAYER_MAX_HEALTH
@@ -79,7 +79,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     }
 }
 
-class IdleState extends State {
+class PlayerIdleState extends State {
     constructor(direction) {
         super()
         this.direction = direction
@@ -106,7 +106,7 @@ class IdleState extends State {
     }
 }
 
-class WalkState extends State {
+class PlayerWalkState extends State {
     constructor(direction) {
         super()
         this.direction = direction
@@ -161,7 +161,7 @@ class WalkState extends State {
     }
 }
 
-class PunchState extends State {
+class PlayerPunchState extends State {
     constructor(direction) {
         super()
         this.direction = direction

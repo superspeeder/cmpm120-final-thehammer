@@ -1,23 +1,26 @@
 // Thug prefab
 // (Thugs are the black-shirt common enemies)
 class Thug extends Phaser.Physics.Arcade.Sprite {
-    constructor(scene, x, y, texture, player) {
+    constructor(scene, x, y, texture) {
         super(scene, x, y, texture)
         scene.add.existing(this)            // add to existing scene
         scene.physics.add.existing(this)    // add physics body
 
-        this.player = player    // Reference to the player
         this.speed = 100
         this.attackRange = 50
         this.hitCount = 0
         this.hp = 3
         this.hitCooldown = false
+        this.thisScene = scene
+
+        this.setOrigin(0.5, 1.0)
+        this.body.setImmovable(true)
 
         // this.direction = direction
         // this.hurtTimer = 500    // in ms
 
         // initialize state machine
-        scene.thugFSM = new StateMachine('idle', {
+        this.fsm = new StateMachine('idle', {
             idle: new IdleState(),
             walk: new WalkState(),
             attack: new AttackState(),
@@ -34,6 +37,10 @@ class Thug extends Phaser.Physics.Arcade.Sprite {
             direction = 'left'
         }
     }
+
+    step() {
+        this.fsm.step()
+    }
 }
 
 // thug-specific state classes
@@ -45,7 +52,7 @@ class IdleState extends State {
     }
 
     execute(scene, thug) {
-        if(Phaser.Math.Distance.Between(this.x, this.y, player.x, player.y) > this.attackRange) {
+        if(Phaser.Math.Distance.Between(thug.x, thug.y, scene.player.x, scene.player.y) > thug.attackRange) {
             this.stateMachine.transition('walk')
         } else {
             this.stateMachine.transition('attack')
@@ -55,11 +62,11 @@ class IdleState extends State {
 
 class WalkState extends State {
     enter(scene, thug) {
-        this.scene.physics.moveToObject(this, this.player, this.speed)
+        scene.physics.moveToObject(thug, scene.player, thug.speed)
     }
 
     execute(scene, thug) {
-        if(Phaser.Math.Distance.Between(this.x, this.y, this.player.x, this.player.y) <= this.attackRange) {
+        if(Phaser.Math.Distance.Between(thug.x, thug.y, scene.player.x, scene.player.y) <= thug.attackRange) {
             this.stateMachine.transition('attack')
         }
     }
@@ -67,7 +74,7 @@ class WalkState extends State {
 
 class AttackState extends State {
     enter(scene, thug) {
-        this.setVelocity(0, 0)
+        thug.setVelocity(0, 0)
         // TODO: Play attack animation here
 
         // TODO: player takes damage
@@ -76,12 +83,12 @@ class AttackState extends State {
 
 class HurtState extends State {
     enter(scene, thug) {
-        this.setVelocity(0)
-        this.setTint(0xff0000) // Flash red
-        this.scene.time.delayedCall(1000, () => {
-            this.clearTint()
-            this.hitCooldown = false
-            if(this.hitCount >= this.hp) {
+        thug.setVelocity(0)
+        thug.setTint(0xff0000) // Flash red
+        scene.time.delayedCall(1000, () => {
+            thug.clearTint()
+            thug.hitCooldown = false
+            if(thug.hitCount >= thug.hp) {
                 this.stateMachine.transition('defeat')
             } else {
                 this.stateMachine.transition('idle')
@@ -92,8 +99,8 @@ class HurtState extends State {
 
 class DefeatState extends State {
     enter(scene, thug) {
-        this.setVelocity(0)
+        thug.setVelocity(0)
         // TODO: play defeat animation
-        this.scene.time.delayedCall(1000, () => this.destroy())
+        scene.time.delayedCall(1000, () => thug.destroy())
     }
 }
