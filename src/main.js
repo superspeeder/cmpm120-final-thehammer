@@ -4,7 +4,7 @@ const config = {
     type: Phaser.AUTO,
     width: 1200,
     height: 900,
-    scene: [Load, Level10],
+    scene: [Load, Menu, LevelTen, LevelFinal],
     scale: {
         mode: Phaser.Scale.NONE,
         autoCenter: Phaser.Scale.CENTER_BOTH
@@ -17,8 +17,32 @@ const config = {
     }
 }
 
+const titleTextConfig = {
+    fontFamily: 'headerBold',
+    fontsize: '36px',
+    color: '#ff0000',
+    align: 'center',
+    padding: {
+        top: 5,
+        bottom: 5
+    }
+}
+
+const scoreTextConfig = {
+    fontFamily: 'pixel',
+    fontSize: '10px',
+    color: '#000000',
+    backgroundColor: '#ffff00',
+    padding: {
+        top: 5,
+        bottom: 5
+    }
+}
+
 const game = new Phaser.Game(config)
 
-let width = game.config.width, height = game.config.height;
-
+// define global variables
+let width = game.config.width, height = game.config.height
+let centerX = width/2, centerY = height/2
+var musicOn = true, sfxOn = true
 const PLAYER_MAX_HEALTH = 100;
