@@ -4,18 +4,17 @@ const config = {
     type: Phaser.AUTO,
     width: 1200,
     height: 900,
-    zoom: 0.5,
-    physics: {
-        default: "arcade",
-        arcade: {
-            debug: true
-        }
-    },
     scene: [Load, Menu, LevelTen, LevelFinal],
     scale: {
         mode: Phaser.Scale.NONE,
         autoCenter: Phaser.Scale.CENTER_BOTH
     },
+    physics: {
+        default: "arcade",
+        arcade: {
+            debug: true,
+        }
+    }
 }
 
 const titleTextConfig = {
@@ -46,3 +45,4 @@ const game = new Phaser.Game(config)
 let width = game.config.width, height = game.config.height
 let centerX = width/2, centerY = height/2
 var musicOn = true, sfxOn = true
+const PLAYER_MAX_HEALTH = 100;

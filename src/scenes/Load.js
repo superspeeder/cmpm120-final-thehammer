@@ -28,6 +28,12 @@ class Load extends Phaser.Scene {
             frameWidth: 12,
             frameHeight: 12,
         })
+      
+        // TODO: load assets
+        this.load.aseprite("playerSprite", "textures/player1.png", "textures/player1.json")
+        this.load.image("sampleEnemySprite", "textures/sampleEnemySprite.png")
+        this.load.image("level10", "textures/level10.png")
+        this.load.image("rock", "textures/rock.png")
     }
 
     create() {
@@ -97,6 +103,12 @@ class Load extends Phaser.Scene {
             repeat: -1,
             frames: this.anims.generateFrameNumbers('animatetest', { start: 27, end: 29})
         })
+
+        // TODO: load main menu scene from here
+        this.anims.createFromAseprite("playerSprite", ["IdleLeft", "IdleRight", "WalkLeft", "WalkRight", "PunchLeft", "PunchRight"])
+
+        this.anims.get("WalkLeft").repeat = -1;
+        this.anims.get("WalkRight").repeat = -1;
 
         // go to Menu scene
         this.scene.start('menuScene')
