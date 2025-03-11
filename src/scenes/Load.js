@@ -24,14 +24,13 @@ class Load extends Phaser.Scene {
         this.load.font('pixel', 'font/Square.ttf')
         this.load.font('clearPixel', 'font/Squareo.ttf')
         // load sprites
-        this.load.spritesheet('animatetest', 'sprites/animationtest.png', {
+        this.load.spritesheet('animatetest', 'sprite/animationtest.png', {
             frameWidth: 12,
             frameHeight: 12,
         })
       
         // TODO: load assets
         this.load.aseprite("playerSprite", "textures/player1.png", "textures/player1.json")
-        this.load.image("sampleEnemySprite", "textures/sampleEnemySprite.png")
         this.load.image("level10", "textures/level10.png")
         this.load.image("rock", "textures/rock.png")
     }
