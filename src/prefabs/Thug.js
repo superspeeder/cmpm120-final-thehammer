@@ -7,6 +7,7 @@ class Thug extends Phaser.Physics.Arcade.Sprite {
         scene.physics.add.existing(this)    // add physics body
 
         this.setOrigin(0.5, 1.0)
+        this.body.setCollideWorldBounds(true)
 
         // this.body.setImmovable(true)
 
@@ -36,6 +37,11 @@ class Thug extends Phaser.Physics.Arcade.Sprite {
         } else if (direction == 'right' && currentX > targetX) {
             direction = 'left'
         }
+    }
+
+    hurt(damage) {
+        console.log("Ow!")
+        this.hp -= damage;
     }
 
     update() {
