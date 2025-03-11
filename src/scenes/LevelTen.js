@@ -19,7 +19,7 @@ class LevelTen extends Phaser.Scene {
         this.thug = new Thug(this, 800, 600, 'animatetest').setScale(8.0)
         this.enemies.add(this.thug)
 
-        this.player = new Player(this, 100, 3.0 * game.config.height / 4.0, this.cursorKeys, [this.thug, this.rock1, this.rock2, this.rock3]).setScale(1.5)
+        this.player = new Player(this, 100, 3.0 * game.config.height / 4.0, this.cursorKeys, [this.thug], [this.rock1, this.rock2, this.rock3]).setScale(1.5)
 
         this.worldUpperLimit = this.physics.add.staticBody(0.0, 0.0, game.config.width, game.config.height / 2.0)
         this.physics.add.collider(this.player, this.worldUpperLimit)

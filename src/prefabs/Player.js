@@ -6,8 +6,9 @@ class Player extends Phaser.Physics.Arcade.Sprite {
      * @param {number} y 
      * @param {Phaser.Types.Input.Keyboard.CursorKeys} cursorKeys 
      * @param {Phaser.Physics.Arcade.Sprite[]} enemies 
+     * @param {Phaser.Physics.Arcade.Sprite[]} extraSorts
      */
-    constructor(scene, x, y, cursorKeys, enemies) {
+    constructor(scene, x, y, cursorKeys, enemies, extraSorts) {
         super(scene, x, y, "playerSprite")
 
         scene.add.existing(this)
@@ -25,7 +26,13 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.enemyColliders = []
         for (let i = 0; i < enemies.length; i++) {
             enemies[i].playerColliderIndex = i
-            this.enemyColliders.push({ collider: scene.physics.add.collider(this.body, enemies[i].body), enemy: enemies[i] })
+            this.enemyColliders.push({ collider: scene.physics.add.collider(this.body, enemies[i].body), enemy: enemies[i], isEnemy: true })
+        }
+
+        let start = this.enemyColliders.length;
+        for (let i = 0; i < extraSorts.length; i++) {
+            extraSorts[i].playerColliderIndex = i + start
+            this.enemyColliders.push({ collider: scene.physics.add.collider(this.body, extraSorts[i].body), enemy: extraSorts[i], isEnemy: false })
         }
 
         this.punchKey = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.C)
@@ -41,9 +48,20 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
         this.health = PLAYER_MAX_HEALTH
         this.points = 0
+
+        this.leftPunchOverlapper = this.scene.physics.add.body(this.x - PLAYER_ATTACK_RANGE, this.y - PLAYER_FIST_HEIGHT - PLAYER_FIST_OFFSET, PLAYER_ATTACK_RANGE - 1, PLAYER_FIST_HEIGHT)
+        this.rightPunchOverlapper = this.scene.physics.add.body(this.x, this.y - PLAYER_FIST_HEIGHT - PLAYER_FIST_OFFSET, PLAYER_ATTACK_RANGE - 1, PLAYER_FIST_HEIGHT)
+
+        this.enemiesGroup = this.scene.physics.add.group(enemies);
+        
+        this.leftPunchOverlap = this.scene.physics.add.overlap(this.leftPunchOverlapper, this.enemiesGroup)
+        this.rightPunchOverlap = this.scene.physics.add.overlap(this.rightPunchOverlapper, this.enemiesGroup)
     }
 
     update() {
+        this.leftPunchOverlapper.position = new Phaser.Math.Vector2(this.x - PLAYER_ATTACK_RANGE, this.y - PLAYER_FIST_HEIGHT - PLAYER_FIST_OFFSET);
+        this.rightPunchOverlapper.position = new Phaser.Math.Vector2(this.x, this.y - PLAYER_FIST_HEIGHT - PLAYER_FIST_OFFSET);
+
         this.stateMachine.step()
         this.ensureOrdering()
     }
@@ -76,6 +94,25 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
     addPoints(points) {
         this.setPoints(this.points + points)        
+    }
+
+    /**
+     * @param {boolean} facingRight Is the player facing right?
+     */
+    doAttackHits(facingRight) {
+        if (facingRight) {
+            this.scene.physics.overlap(this.rightPunchOverlapper, this.enemiesGroup, (object1, object2) => {
+                if (object2.playerColliderIndex !== undefined) {
+                    object2.hurt(PLAYER_ATTACK_DAMAGE)
+                }
+            })
+        } else {
+            this.scene.physics.overlap(this.leftPunchOverlapper, this.enemiesGroup, (object1, object2) => {
+                if (object2.playerColliderIndex !== undefined) {
+                    object2.hurt(PLAYER_ATTACK_DAMAGE)
+                }
+            })
+        }
     }
 }
 
@@ -170,11 +207,16 @@ class PlayerPunchState extends State {
     enter(player, scene) {
         player.body.setVelocity(0, 0)
         player.play("Punch" + this.direction)
-        player.on("animationcomplete", () => {
+        player.once("animationcomplete", () => {
             player.stateMachine.transition("Idle" + this.direction)
         })
+        player.doAttackHits(this.direction == "Right")
     }
 }
 
 const ABOVE_LAYER = 1
 const BELOW_LAYER = -1
+const PLAYER_FIST_OFFSET = 81
+const PLAYER_FIST_HEIGHT = 36
+const PLAYER_ATTACK_RANGE = 64
+const PLAYER_ATTACK_DAMAGE = 1
