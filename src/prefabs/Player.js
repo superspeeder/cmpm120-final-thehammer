@@ -149,6 +149,8 @@ class PlayerIdleState extends State {
         if (Phaser.Input.Keyboard.JustDown(player.punchKey)) {
             player.stateMachine.transition("Punch" + this.direction)
         }
+
+        player.setVelocity(0, 0)
     }
 }
 

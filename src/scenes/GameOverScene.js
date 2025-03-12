@@ -15,6 +15,9 @@ class GameOverScene extends Phaser.Scene {
         new Button(this, centerX, centerY * 5/4, 'Try Again', () => {
             this.scene.start('levelTenScene')
         })
+        new Button(this, centerX, centerY * 5/4 + 48, 'Main Menu', () => {
+            this.scene.start('menuScene')
+        })
     }
 
     update() {
