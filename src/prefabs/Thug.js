@@ -42,6 +42,11 @@ class Thug extends Phaser.Physics.Arcade.Sprite {
     hurt(damage) {
         console.log("Ow!")
         this.hp -= damage;
+
+        if (this.hp <= 0) {
+            this.disableBody()
+            // TODO: death animation
+        }
     }
 
     update() {
