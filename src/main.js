@@ -45,4 +45,3 @@ const game = new Phaser.Game(config)
 let width = game.config.width, height = game.config.height
 let centerX = width/2, centerY = height/2
 var musicOn = true, sfxOn = true
-const PLAYER_MAX_HEALTH = 100;

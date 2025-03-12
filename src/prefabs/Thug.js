@@ -16,6 +16,10 @@ class Thug extends Phaser.Physics.Arcade.Sprite {
         this.hitCount = 0
         this.hp = 3
         this.hitCooldown = false
+        this.thisScene = scene
+
+        this.leftAttackCollider = this.scene.physics.add.body(this.getLeftCenter().x - this.attackRange / 2, this.getLeftCenter().y - 36, this.attackRange / 2 - 1, 36)
+        this.rightAttackCollider = this.scene.physics.add.body(this.getRightCenter().x, this.getRightCenter().y - 36, this.attackRange / 2 - 1, 36)
 
         // this.direction = direction
         // this.hurtTimer = 500    // in ms
@@ -50,7 +54,44 @@ class Thug extends Phaser.Physics.Arcade.Sprite {
     }
 
     update() {
+        this.leftAttackCollider.position = new Phaser.Math.Vector2(this.getLeftCenter().x - this.attackRange / 2 - 1, this.getLeftCenter().y - 36)
+        this.rightAttackCollider.position = new Phaser.Math.Vector2(this.getRightCenter().x, this.getRightCenter().y - 36)
+
         this.fsm.step();
+    }
+
+    tryAttackPlayer() {
+        if (this.attackCooldown) return
+        this.scene.physics.overlap(this.thisScene.player.hitCollider, this.leftAttackCollider, (object1, object2) => {
+            this.fsm.transition('attack')
+        })
+    }
+
+    attackLeft() {
+        this.scene.physics.overlap(this.thisScene.player.hitCollider, this.leftAttackCollider, (object1, object2) => {
+            this.thisScene.player.hurt(1)
+        })
+
+        this.scene.time.delayedCall(300, () => {
+            this.fsm.transition('walk')
+        })
+        this.scene.time.delayedCall(700, () => {
+            this.attackCooldown = false
+        })
+
+    }
+
+    attackRight() {
+        this.scene.physics.overlap(this.thisScene.player.hitCollider, this.rightAttackCollider, (object1, object2) => {
+            this.thisScene.player.hurt(1)
+        })
+
+        this.scene.time.delayedCall(300, () => {
+            this.fsm.transition('walk')
+        })
+        this.scene.time.delayedCall(700, () => {
+            this.attackCooldown = false
+        })
     }
 }
 
@@ -63,11 +104,13 @@ class IdleState extends State {
     }
 
     execute(scene, thug) {
-        if(Phaser.Math.Distance.Between(thug.x, thug.y, scene.player.x, scene.player.y) > thug.attackRange) {
-            this.stateMachine.transition('walk')
-        } else {
-            this.stateMachine.transition('attack')
-        }
+        // if(Phaser.Math.Distance.Between(thug.x, thug.y, scene.player.getCenter().x, scene.player.getCenter().y) > thug.attackRange) {
+        //     this.stateMachine.transition('walk')
+        // } else {
+        //     this.stateMachine.transition('attack')
+        // }
+        this.stateMachine.transition('walk')
+        thug.tryAttackPlayer()
     }
 }
 
@@ -78,18 +121,31 @@ class WalkState extends State {
 
     execute(scene, thug) {
         scene.physics.moveToObject(thug, scene.player, thug.speed)
-        if(Phaser.Math.Distance.Between(thug.x, thug.y, scene.player.x, scene.player.y) <= thug.attackRange) {
-            this.stateMachine.transition('attack')
-        }
+        thug.tryAttackPlayer()
     }
 }
 
 class AttackState extends State {
+    /**
+     * @param {Phaser.Scene} scene 
+     * @param {Thug} thug 
+     */
     enter(scene, thug) {
         thug.setVelocity(0, 0)
+        thug.attackCooldown = true
+
         // TODO: Play attack animation here
 
-        // TODO: player takes damage
+        if (scene.player.x < thug.getCenter().x) {
+            scene.time.delayedCall(300, () => {
+                thug.attackLeft()
+            })
+        } else {
+            scene.time.delayedCall(300, () => {
+                thug.attackRight()
+            })
+        }
+
     }
 }
 
