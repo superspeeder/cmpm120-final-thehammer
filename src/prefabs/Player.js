@@ -137,7 +137,7 @@ class PlayerIdleState extends State {
             player.stateMachine.transition("Walk" + this.direction)
         }
 
-        if (player.punchKey.isDown) {
+        if (Phaser.Input.Keyboard.JustDown(player.punchKey)) {
             player.stateMachine.transition("Punch" + this.direction)
         }
     }
@@ -188,7 +188,7 @@ class PlayerWalkState extends State {
 
         player.body.setVelocity(v.x, v.y)
 
-        if (player.punchKey.isDown) {
+        if (Phaser.Input.Keyboard.JustDown(player.punchKey)) {
             switchTo = "Punch" + this.direction
         }
 
