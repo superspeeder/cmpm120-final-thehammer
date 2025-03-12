@@ -34,22 +34,16 @@ class Thug extends Phaser.Physics.Arcade.Sprite {
         }, [scene, this])   // must be passed as args to maintain scene/object context
     }
 
-    // thug AI
-    facePlayer(currentX, direction, targetX) {
-        if(direction == 'left' && currentX < targetX){
-            direction = 'right'
-        } else if (direction == 'right' && currentX > targetX) {
-            direction = 'left'
-        }
-    }
-
     hurt(damage) {
         console.log("Ow!")
         this.hp -= damage;
 
         if (this.hp <= 0) {
             this.disableBody()
+            this.fsm.transition("defeat")
             // TODO: death animation
+        } else {
+            this.fsm.transition("hurt")
         }
     }
 
@@ -64,9 +58,15 @@ class Thug extends Phaser.Physics.Arcade.Sprite {
 
     tryAttackPlayer() {
         if (this.attackCooldown) return
+
         this.scene.physics.overlap(this.thisScene.player.hitCollider, this.leftAttackCollider, (object1, object2) => {
             this.fsm.transition('attack')
         })
+
+        this.scene.physics.overlap(this.thisScene.player.hitCollider, this.rightAttackCollider, (object1, object2) => {
+            this.fsm.transition('attack')
+        })
+
     }
 
     attackLeft() {
@@ -119,10 +119,33 @@ class IdleState extends State {
 class WalkState extends State {
     enter(scene, thug) {
         scene.physics.moveToObject(thug, scene.player, thug.speed)
+        
+        if (scene.player.x < thug.getCenter().x) {
+            thug.direction = "left"
+            thug.play("walk-left")
+        } else {
+            thug.direction = "right"
+            thug.play("walk-right")
+        }
     }
 
     execute(scene, thug) {
         scene.physics.moveToObject(thug, scene.player, thug.speed)
+        if (scene.player.x < thug.getCenter().x) {
+            if (thug.direction != "left") {
+                thug.play("walk-left")
+            }
+
+            thug.direction = "left"
+        } else {
+            if (thug.direction != "right") {
+                thug.play("walk-right")
+            }
+
+            thug.direction = "right"
+        }
+
+
         thug.tryAttackPlayer()
     }
 }
@@ -136,13 +159,13 @@ class AttackState extends State {
         thug.setVelocity(0, 0)
         thug.attackCooldown = true
 
-        // TODO: Play attack animation here
-
         if (scene.player.x < thug.getCenter().x) {
+            thug.play("attack-left")
             scene.time.delayedCall(300, () => {
                 thug.attackLeft()
             })
         } else {
+            thug.play("attack-right")
             scene.time.delayedCall(300, () => {
                 thug.attackRight()
             })
@@ -155,14 +178,17 @@ class HurtState extends State {
     enter(scene, thug) {
         thug.setVelocity(0)
         thug.setTint(0xff0000) // Flash red
+
+        if (scene.player.x < thug.getCenter().x) {
+            thug.direction = "left"
+            thug.play("hurt-left")
+        } else {
+            thug.direction = "right"
+            thug.play("hurt-right")
+        }
+
         scene.time.delayedCall(1000, () => {
             thug.clearTint()
-            thug.hitCooldown = false
-            if(thug.hitCount >= thug.hp) {
-                this.stateMachine.transition('defeat')
-            } else {
-                this.stateMachine.transition('idle')
-            }
         })
     }
 }
@@ -170,7 +196,17 @@ class HurtState extends State {
 class DefeatState extends State {
     enter(scene, thug) {
         thug.setVelocity(0)
+
+        if (scene.player.x < thug.getCenter().x) {
+            thug.direction = "left"
+            thug.play("defeat-left")
+        } else {
+            thug.direction = "right"
+            thug.play("defeat-right")
+        }
+
+
         // TODO: play defeat animation
-        scene.time.delayedCall(1000, () => thug.destroy())
+        scene.time.delayedCall(1000, () => thug.stop())
     }
 }
