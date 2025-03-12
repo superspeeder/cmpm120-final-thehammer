@@ -24,6 +24,7 @@ class Load extends Phaser.Scene {
         this.load.font('pixel', 'font/Square.ttf')
         this.load.font('clearPixel', 'font/Squareo.ttf')
         // load sprites
+        this.load.image('fire', 'sprite/fire.png')
         this.load.spritesheet('animatetest', 'sprite/animationtest.png', {
             frameWidth: 12,
             frameHeight: 12,

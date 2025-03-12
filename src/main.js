@@ -19,7 +19,7 @@ const config = {
 
 const titleTextConfig = {
     fontFamily: 'headerBold',
-    fontsize: '36px',
+    fontSize: '96px',
     color: '#ff0000',
     align: 'center',
     padding: {
