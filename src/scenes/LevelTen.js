@@ -39,7 +39,12 @@ class LevelTen extends Phaser.Scene {
         this.player.on("playerpointschanged", (/** @type {integer} */ points) => {
             this.pointsDisplay.setText(points.toString)
         })
-        
+
+        this.healthBar = this.add.sprite(60, 60, "healthbar", 0).setOrigin(0).setScale(3)
+    
+        this.player.on("playerhurt", (newHealth) => {
+            this.healthBar.setFrame(PLAYER_MAX_HEALTH - newHealth)
+        })
     }
 
     update() {

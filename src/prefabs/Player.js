@@ -58,6 +58,8 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.rightPunchOverlap = this.scene.physics.add.overlap(this.rightPunchOverlapper, this.enemiesGroup)
 
         this.hitCollider = this.scene.physics.add.body(this.getTopLeft().x, this.getTopLeft().y, 60, 150).setOffset(0.0)
+
+        this.thisScene = scene
     }
 
     update() {
@@ -85,8 +87,10 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         console.log("Oof!")
         this.health -= hp
         if (this.health <= 0) {
-            // TODO: game over
+            this.scene.scene.start("gameOverScene")
         }
+
+        this.emit("playerhurt", this.health)
 
         // TODO: play a sound when the player gets hurt
     }

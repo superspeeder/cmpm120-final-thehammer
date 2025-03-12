@@ -33,6 +33,8 @@ class Load extends Phaser.Scene {
         this.load.aseprite("playerSprite", "textures/player1.png", "textures/player1.json")
         this.load.image("level10", "textures/level10.png")
         this.load.image("rock", "textures/rock.png")
+
+        this.load.spritesheet("healthbar", "textures/healthbar.png", { frameWidth: 80, frameHeight: 16 })
     }
 
     create() {
