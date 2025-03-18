@@ -2,6 +2,7 @@
 class Button extends Phaser.GameObjects.Text {
     constructor(scene, x, y, text, callback) {
         super(scene, x, y, text, {
+            fontFamily: 'headerBold',
             fontSize: '32px',
             fill: '#fff',
             backgroundColor: '#704214',
