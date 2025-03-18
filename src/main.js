@@ -1,5 +1,7 @@
 'use strict'
 
+// Authors: Andy Newton, Joshua Acosta
+// Phaser Components Used: Tweens, Particle Systems, Animation Manager, Arcade Physics, Text Objects, Timers
 
 
 const config = {

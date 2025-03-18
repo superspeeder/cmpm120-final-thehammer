@@ -9,8 +9,6 @@ class Thug extends Phaser.Physics.Arcade.Sprite {
         this.setOrigin(0.5, 1.0)
         this.body.setCollideWorldBounds(true)
 
-        // this.body.setImmovable(true)
-
         this.speed = 100
         this.attackRange = 150
         this.hitCount = 0
@@ -20,9 +18,6 @@ class Thug extends Phaser.Physics.Arcade.Sprite {
 
         this.leftAttackCollider = this.scene.physics.add.body(this.getLeftCenter().x - this.attackRange / 2, this.getLeftCenter().y - 36, this.attackRange / 2 - 1, 36)
         this.rightAttackCollider = this.scene.physics.add.body(this.getRightCenter().x, this.getRightCenter().y - 36, this.attackRange / 2 - 1, 36)
-
-        // this.direction = direction
-        // this.hurtTimer = 500    // in ms
 
         // initialize state machine
         this.fsm = new StateMachine('idle', {
