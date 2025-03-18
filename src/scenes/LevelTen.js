@@ -45,6 +45,9 @@ class LevelTen extends Phaser.Scene {
         this.player.on("playerhurt", (newHealth) => {
             this.healthBar.setFrame(PLAYER_MAX_HEALTH - newHealth)
         })
+
+        this.sound.play("bgm", {loop: true, volume:0.5})
+        
     }
 
     update() {

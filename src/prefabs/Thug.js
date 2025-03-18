@@ -178,6 +178,7 @@ class HurtState extends State {
     enter(scene, thug) {
         thug.setVelocity(0)
         thug.setTint(0xff0000) // Flash red
+        scene.sound.play("hit")
 
         if (scene.player.x < thug.getCenter().x) {
             thug.direction = "left"
@@ -196,6 +197,7 @@ class HurtState extends State {
 class DefeatState extends State {
     enter(scene, thug) {
         thug.setVelocity(0)
+        scene.sound.play("death")
 
         if (scene.player.x < thug.getCenter().x) {
             thug.direction = "left"

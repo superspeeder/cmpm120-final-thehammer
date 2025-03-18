@@ -87,7 +87,10 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         console.log("Oof!")
         this.health -= hp
         if (this.health <= 0) {
+            this.scene.sound.play("death")
             this.scene.scene.start("gameOverScene")
+        } else {
+            this.scene.sound.play("hit")
         }
 
         this.emit("playerhurt", this.health)

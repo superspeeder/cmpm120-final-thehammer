@@ -36,6 +36,12 @@ class Load extends Phaser.Scene {
         this.load.image("rock", "textures/rock.png")
 
         this.load.spritesheet("healthbar", "textures/healthbar.png", { frameWidth: 80, frameHeight: 16 })
+
+        this.load.audio("bgm", "music/bgm.wav")
+        this.load.audio("hit", "music/hit.wav")
+        this.load.audio("death", "music/death.wav")
+        this.load.audio("win", "music/win.wav")
+        this.load.audio("kill", "music/kill.wav")
     }
 
     create() {
