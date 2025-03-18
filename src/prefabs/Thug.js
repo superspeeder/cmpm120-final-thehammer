@@ -41,19 +41,16 @@ class Thug extends Phaser.Physics.Arcade.Sprite {
         if (this.hp <= 0) {
             this.disableBody()
             this.fsm.transition("defeat")
-            // TODO: death animation
         } else {
             this.fsm.transition("hurt")
         }
     }
 
     update() {
-        if (this.hp > 0) {
-            this.leftAttackCollider.position = new Phaser.Math.Vector2(this.getLeftCenter().x - this.attackRange / 2 - 1, this.getLeftCenter().y - 36)
-            this.rightAttackCollider.position = new Phaser.Math.Vector2(this.getRightCenter().x, this.getRightCenter().y - 36)
-    
-            this.fsm.step();    
-        }
+        this.leftAttackCollider.position = new Phaser.Math.Vector2(this.getLeftCenter().x - this.attackRange / 2 - 1, this.getLeftCenter().y - 36)
+        this.rightAttackCollider.position = new Phaser.Math.Vector2(this.getRightCenter().x, this.getRightCenter().y - 36)
+
+        this.fsm.step();
     }
 
     tryAttackPlayer() {
@@ -207,8 +204,6 @@ class DefeatState extends State {
             thug.play("defeat-right")
         }
 
-
-        // TODO: play defeat animation
-        scene.time.delayedCall(1000, () => thug.stop())
+        thug.emit("dead")
     }
 }

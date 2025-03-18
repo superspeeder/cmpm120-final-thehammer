@@ -15,11 +15,29 @@ class LevelTen extends Phaser.Scene {
         this.rock2 = new Rock(this, 221, 631)
         this.rock3 = new Rock(this, 923, 790)
 
+        this.rocks = this.add.group()
+        this.rocks.add(this.rock1)
+        this.rocks.add(this.rock2)
+        this.rocks.add(this.rock3)
+
         this.enemies = this.add.group()
         this.thug = new Thug(this, 800, 600, 'animatetest').setScale(8.0)
         this.enemies.add(this.thug)
 
-        this.player = new Player(this, 100, 3.0 * game.config.height / 4.0, this.cursorKeys, [this.thug], [this.rock1, this.rock2, this.rock3]).setScale(1.5)
+
+        this.wave2 = {thug1: new Thug(this, 0, 0, 'animatetest').setScale(8.0), thug2: new Thug(this, 0, 0, 'animatetest').setScale(8.0), thug3: new Thug(this, 0, 0, 'animatetest').setScale(8.0)}
+        this.wave2.thug1.body.setEnable(false)
+        this.wave2.thug2.body.setEnable(false)
+        this.wave2.thug3.body.setEnable(false)
+
+        this.enemies.add(this.wave2.thug1)
+        this.enemies.add(this.wave2.thug2)
+        this.enemies.add(this.wave2.thug3)
+        
+        this.physics.add.collider(this.rocks,this.enemies)
+        this.physics.add.collider(this.enemies,this.enemies)
+
+        this.player = new Player(this, 100, 3.0 * game.config.height / 4.0, this.cursorKeys, [this.thug, this.wave2.thug1, this.wave2.thug2, this.wave2.thug3], [this.rock1, this.rock2, this.rock3]).setScale(1.5)
 
         this.worldUpperLimit = this.physics.add.staticBody(0.0, 0.0, game.config.width, game.config.height / 2.0)
         this.physics.add.collider(this.player, this.worldUpperLimit)
@@ -47,13 +65,116 @@ class LevelTen extends Phaser.Scene {
         })
 
         this.sound.play("bgm", {loop: true, volume:0.5})
+
+        this.thug.on("dead", () => {
+            this.enterWave2()
+        })
+
+        this.thugCounter = 1
+
         
+        let death_wave2f = () => {
+            this.thugCounter -= 1
+            if (this.thugCounter <= 0) {
+                this.tweens.add({
+                    targets: [this.wave2.thug1, this.wave2.thug2, this.wave2.thug3],
+                    y: '-=25',
+                    alpha: 0.0,
+                    ease: 'Cubic',
+                    duration: 1000,
+                    repeat: 0,
+                    yoyo: false,
+                    onComplete: () => {
+                        this.thug.body.setEnable(false)
+                        this.thug.setPosition(0, 0)
+                        this.thug.setVisible(false)
+                        
+                        this.wave2.thug1.setVisible(false)
+                        this.wave2.thug2.setVisible(false)
+                        this.wave2.thug3.setVisible(false)
+    
+                        this.wave2.thug1.setPosition(0, 0)
+                        this.wave2.thug2.setPosition(0, 0)
+                        this.wave2.thug3.setPosition(0, 0)
+
+                        if (this.thugCounter <= 0) {
+                            this.scene.start("winScene")
+                        }
+                    }
+                })
+            }
+        };
+
+        this.wave2.thug1.on("dead", death_wave2f)
+        this.wave2.thug2.on("dead", death_wave2f)
+        this.wave2.thug3.on("dead", death_wave2f)
+
+        this.wave = 1
+    }
+
+    enterWave2() {
+        this.wave = 0
+
+        this.tweens.chain({
+            targets: null,
+            tweens: [
+                {
+                    targets: this.thug,
+                    y: '-=25',
+                    alpha: 0.0,
+                    ease: 'Cubic',
+                    duration: 1000,
+                    repeat: 0,
+                    yoyo: false,
+                    onComplete: () => {
+                        this.thug.body.setEnable(false)
+                        this.thug.setPosition(0, 0)
+                        this.thug.setVisible(false)
+                        
+                        this.wave2.thug1.setVisible(true)
+                        this.wave2.thug2.setVisible(true)
+                        this.wave2.thug3.setVisible(true)
+
+                        this.wave2.thug1.setAlpha(1.0)
+                        this.wave2.thug2.setAlpha(1.0)
+                        this.wave2.thug3.setAlpha(1.0)
+
+                    }
+                },
+                {
+                    targets: [this.wave2.thug1, this.wave2.thug2, this.wave2.thug3],
+                    x: '-=150',
+                    ease: 'Cubic',
+                    duration: 1000,
+                    repeat: 0,
+                    yoyo: false,
+                    onComplete: () => {
+                        this.wave2.thug1.setPosition(width + 25, Phaser.Math.Between(height / 2 + 64, height - 64))
+                        this.wave2.thug2.setPosition(width + 125, Phaser.Math.Between(height / 2 + 64, height - 64))
+                        this.wave2.thug3.setPosition(width + 175, Phaser.Math.Between(height / 2 + 64, height - 64))
+
+                        this.wave2.thug1.body.setEnable(true)
+                        this.wave2.thug2.body.setEnable(true)
+                        this.wave2.thug3.body.setEnable(true)
+                        this.wave = 2
+                        this.thugCounter = 3
+                    }
+                }
+            ]
+        })
     }
 
     update() {
         // step(update) state machines
         this.player.update()
-        this.thug.update()
+
+        if (this.wave == 1) {
+            this.thug.update()
+        } else if (this.wave == 2) {
+            this.wave2.thug1.update()
+            this.wave2.thug2.update()
+            this.wave2.thug3.update()
+        }
     }
 
     enemyFollows() {
