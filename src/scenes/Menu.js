@@ -27,6 +27,9 @@ class Menu extends Phaser.Scene {
         new Button(this, centerX, centerY * 5/4, 'Play', () => {
             this.scene.start('levelTenScene')
         })
+        new Button(this, centerX, centerY * 7/4, 'Credits', () => {
+            this.scene.start('creditsScene')
+        });
 
         this.add.text(width / 2, 3 * height / 4, "Controls: Arrow keys to move.\n  C to punch.", {
             fontSize: '24px',

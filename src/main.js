@@ -4,7 +4,7 @@ const config = {
     type: Phaser.AUTO,
     width: 1200,
     height: 900,
-    scene: [Load, Menu, LevelTen, LevelFinal, GameOverScene],
+    scene: [Load, Menu, LevelTen, LevelFinal, GameOverScene, Credits],
     scale: {
         mode: Phaser.Scale.NONE,
         autoCenter: Phaser.Scale.CENTER_BOTH
@@ -21,6 +21,17 @@ const titleTextConfig = {
     fontFamily: 'headerBold',
     fontSize: '96px',
     color: '#ff0000',
+    align: 'center',
+    padding: {
+        top: 5,
+        bottom: 5
+    }
+}
+
+const creditTextConfig = {
+    fontFamily: 'headerBold',
+    fontSize: '36px',
+    color: '#ffffff',
     align: 'center',
     padding: {
         top: 5,
