@@ -32,6 +32,7 @@ class Menu extends Phaser.Scene {
         });
 
         this.add.text(width / 2, 3 * height / 4, "Controls: Arrow keys to move.\n  C to punch.", {
+            fontFamily: "headerBold",
             fontSize: '24px',
             fill: '#fff',
             backgroundColor: '#704214',

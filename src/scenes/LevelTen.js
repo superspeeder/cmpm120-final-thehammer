@@ -44,18 +44,18 @@ class LevelTen extends Phaser.Scene {
 
         // TODO: replace this with bitmap text
         let textConfig = {
-            fontFamily: "Helvetica",
-            fontSize: "24px",
-            backgroundColor: "white",
-            fixedWidth: 80,
-            color: "black",
-            align: "right",
+            fontFamily: 'headerBold',
+            fontSize: '24px',
+            fill: '#fff',
+            backgroundColor: '#704214',
+            padding: { x: 10, y: 5 },
+            align: 'center'
         }
 
         this.pointsDisplay = this.add.text(game.config.width - 110, 30, "0", textConfig)
 
         this.player.on("playerpointschanged", (/** @type {integer} */ points) => {
-            this.pointsDisplay.setText(points.toString)
+            this.pointsDisplay.setText(points.toString())
         })
 
         this.healthBar = this.add.sprite(60, 60, "healthbar", 0).setOrigin(0).setScale(3)
@@ -115,52 +115,36 @@ class LevelTen extends Phaser.Scene {
     enterWave2() {
         this.wave = 0
 
-        this.tweens.chain({
-            targets: null,
-            tweens: [
-                {
-                    targets: this.thug,
-                    y: '-=25',
-                    alpha: 0.0,
-                    ease: 'Cubic',
-                    duration: 1000,
-                    repeat: 0,
-                    yoyo: false,
-                    onComplete: () => {
-                        this.thug.body.setEnable(false)
-                        this.thug.setPosition(0, 0)
-                        this.thug.setVisible(false)
-                        
-                        this.wave2.thug1.setVisible(true)
-                        this.wave2.thug2.setVisible(true)
-                        this.wave2.thug3.setVisible(true)
+        this.tweens.add({
+            targets: this.thug,
+            y: '-=25',
+            alpha: 0.0,
+            ease: 'Cubic',
+            duration: 1000,
+            repeat: 0,
+            delay: 250,
+            yoyo: false,
+            onComplete: () => {
+                // when this animation finishes, make sure the original enemy is removed fully from the working parts of the scene (don't want to destroy them since they are stilled referenced by the player).
+                this.thug.body.setEnable(false)
+                this.thug.setPosition(0, 0)
+                this.thug.setVisible(false)
+                
+                // show the new enemies and place them somewhere offscreen, far enough apart that their colliders aren't touching (so that the physics works right).
+                this.wave2.thug1.setVisible(true)
+                this.wave2.thug2.setVisible(true)
+                this.wave2.thug3.setVisible(true)
 
-                        this.wave2.thug1.setAlpha(1.0)
-                        this.wave2.thug2.setAlpha(1.0)
-                        this.wave2.thug3.setAlpha(1.0)
+                this.wave2.thug1.setAlpha(1.0)
+                this.wave2.thug2.setAlpha(1.0)
+                this.wave2.thug3.setAlpha(1.0)
 
-                    }
-                },
-                {
-                    targets: [this.wave2.thug1, this.wave2.thug2, this.wave2.thug3],
-                    x: '-=150',
-                    ease: 'Cubic',
-                    duration: 1000,
-                    repeat: 0,
-                    yoyo: false,
-                    onComplete: () => {
-                        this.wave2.thug1.setPosition(width + 25, Phaser.Math.Between(height / 2 + 64, height - 64))
-                        this.wave2.thug2.setPosition(width + 125, Phaser.Math.Between(height / 2 + 64, height - 64))
-                        this.wave2.thug3.setPosition(width + 175, Phaser.Math.Between(height / 2 + 64, height - 64))
-
-                        this.wave2.thug1.body.setEnable(true)
-                        this.wave2.thug2.body.setEnable(true)
-                        this.wave2.thug3.body.setEnable(true)
-                        this.wave = 2
-                        this.thugCounter = 3
-                    }
-                }
-            ]
+                this.wave2.thug1.setPosition(width + 16, Phaser.Math.Between(height / 2 + 64, height - 64))
+                this.wave2.thug2.setPosition(width + 144, Phaser.Math.Between(height / 2 + 64, height - 64))
+                this.wave2.thug3.setPosition(width + 272, Phaser.Math.Between(height / 2 + 64, height - 64))
+                this.wave = 2
+                this.thugCounter = 3
+            }
         })
     }
 

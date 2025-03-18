@@ -182,6 +182,7 @@ class HurtState extends State {
 
         scene.time.delayedCall(1000, () => {
             thug.clearTint()
+            this.stateMachine.transition("idle")
         })
     }
 }

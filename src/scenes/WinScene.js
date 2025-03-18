@@ -5,6 +5,7 @@ class WinScene extends Phaser.Scene {
 
     create() {
         this.add.text(width / 2, height / 4, "You Win!", {
+            fontFamily: "headerBold",
             fontSize: '48px',
             fill: '#fff',
             backgroundColor: '#704214',
