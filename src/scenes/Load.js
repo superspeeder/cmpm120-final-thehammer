@@ -29,6 +29,10 @@ class Load extends Phaser.Scene {
             frameWidth: 12,
             frameHeight: 12,
         })
+        this.load.spritesheet('thugAnimation', 'sprite/thug.png', {
+            frameWidth: 128,
+            frameHeight: 164
+        })
       
         // TODO: load assets
         this.load.aseprite("playerSprite", "textures/player1.png", "textures/player1.json")
@@ -45,7 +49,7 @@ class Load extends Phaser.Scene {
             key: 'idle-left',
             frameRate: 12,
             repeat: -1,
-            frames: this.anims.generateFrameNumbers('animatetest', { start: 0, end: 2})
+            frames: this.anims.generateFrameNumbers('thugAnimation', )
         })
         this.anims.create({
             key: 'idle-right',
