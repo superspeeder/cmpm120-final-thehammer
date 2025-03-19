@@ -35,7 +35,7 @@ const titleTextConfig = {
 const creditTextConfig = {
     fontFamily: 'headerBold',
     fontSize: '36px',
-    color: '#ffffff',
+    color: '#000000',
     align: 'center',
     padding: {
         top: 5,
