@@ -122,18 +122,10 @@ class Thug extends Phaser.Physics.Arcade.Sprite {
 class IdleState extends State {
     enter(scene, thug) {
         thug.setVelocity(0)
-        // thug.body.setImmovable(false)
-
-        // thug.anims.play(`idle-${thug.direction}`)
-        // thug.anims.stop()
+        thug.clearTint()
     }
 
     execute(scene, thug) {
-        // if(Phaser.Math.Distance.Between(thug.x, thug.y, scene.player.getCenter().x, scene.player.getCenter().y) > thug.attackRange) {
-        //     this.stateMachine.transition('walk')
-        // } else {
-        //     this.stateMachine.transition('attack')
-        // }
         this.stateMachine.transition('walk')
         thug.tryAttackPlayer()
     }
