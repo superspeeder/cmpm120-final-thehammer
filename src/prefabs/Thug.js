@@ -49,6 +49,10 @@ class Thug extends Phaser.Physics.Arcade.Sprite {
     }
 
     update() {
+        if (this.hp <= 0 && this.fsm.state != "defeat") {
+            this.fsm.transition("defeat")
+        }
+        
         this.leftAttackCollider.position = new Phaser.Math.Vector2(this.getLeftCenter().x - this.attackRange / 2 - 1, this.getLeftCenter().y - 36)
         this.rightAttackCollider.position = new Phaser.Math.Vector2(this.getRightCenter().x, this.getRightCenter().y - 36)
 

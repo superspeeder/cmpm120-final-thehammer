@@ -110,6 +110,11 @@ class LevelTen extends Phaser.Scene {
         this.wave2.thug3.on("dead", death_wave2f)
 
         this.wave = 1
+
+        this.input.keyboard.on("keydown-ESC", () => {
+            this.scene.switch('pauseScene')
+            this.sound.pauseAll()
+        })
     }
 
     enterWave2() {
