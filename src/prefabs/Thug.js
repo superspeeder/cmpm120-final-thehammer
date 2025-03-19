@@ -16,6 +16,8 @@ class Thug extends Phaser.Physics.Arcade.Sprite {
         this.hitCooldown = false
         this.thisScene = scene
 
+        this.canBeHit = true
+
         this.leftAttackCollider = this.scene.physics.add.body(this.getLeftCenter().x - this.attackRange / 2, this.getLeftCenter().y - 36, this.attackRange / 2 - 1, 36)
         this.rightAttackCollider = this.scene.physics.add.body(this.getRightCenter().x, this.getRightCenter().y - 36, this.attackRange / 2 - 1, 36)
 
@@ -30,7 +32,10 @@ class Thug extends Phaser.Physics.Arcade.Sprite {
     }
 
     hurt(damage) {
-        console.log("Ow!")
+        if (!this.canBeHit) {
+            return 0
+        }
+
         this.hp -= damage;
 
         if (this.hp <= 0) {
@@ -39,6 +44,8 @@ class Thug extends Phaser.Physics.Arcade.Sprite {
         } else {
             this.fsm.transition("hurt")
         }
+
+        return 1
     }
 
     update() {
@@ -180,9 +187,14 @@ class HurtState extends State {
             thug.play("hurt-right")
         }
 
+        thug.canBeHit = false
+
         scene.time.delayedCall(1000, () => {
             thug.clearTint()
-            this.stateMachine.transition("idle")
+            if (this.stateMachine.state == "hurt") {
+                this.stateMachine.transition("idle")
+            }
+            thug.canBeHit = true
         })
     }
 }

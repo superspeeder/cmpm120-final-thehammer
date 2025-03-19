@@ -107,6 +107,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     }
 
     addPoints(points) {
+        if (points == 0) return
         this.setPoints(this.points + points)        
     }
 
@@ -117,15 +118,13 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         if (facingRight) {
             this.scene.physics.overlap(this.rightPunchOverlapper, this.enemiesGroup, (object1, object2) => {
                 if (object2.playerColliderIndex !== undefined) {
-                    object2.hurt(PLAYER_ATTACK_DAMAGE)
-                    this.addPoints(1)
+                    this.addPoints(object2.hurt(PLAYER_ATTACK_DAMAGE))
                 }
             })
         } else {
             this.scene.physics.overlap(this.leftPunchOverlapper, this.enemiesGroup, (object1, object2) => {
                 if (object2.playerColliderIndex !== undefined) {
-                    object2.hurt(PLAYER_ATTACK_DAMAGE)
-                    this.addPoints(1)
+                    this.addPoints(object2.hurt(PLAYER_ATTACK_DAMAGE))
                 }
             })
         }
@@ -238,4 +237,4 @@ const PLAYER_FIST_OFFSET = 81
 const PLAYER_FIST_HEIGHT = 36
 const PLAYER_ATTACK_RANGE = 64
 const PLAYER_ATTACK_DAMAGE = 1
-const PLAYER_MAX_HEALTH = 5
+const PLAYER_MAX_HEALTH = 5000
