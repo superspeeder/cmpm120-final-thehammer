@@ -17,11 +17,8 @@ class Button extends Phaser.GameObjects.Text {
         this.on('pointerover', () => this.setStyle({ fill: '#ff0000'}));
         this.on('pointerout', () => this.setStyle({ fill: '#fff'}));
 
-        // Click action with sound
+        // Click action
         this.on('pointerdown', () => {
-            // if(sfxOn){
-            //     scene.sound.play('buttonClick')
-            // }
             callback()
         });
 

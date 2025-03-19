@@ -54,8 +54,16 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
         this.enemiesGroup = this.scene.physics.add.group(enemies);
         
-        this.leftPunchOverlap = this.scene.physics.add.overlap(this.leftPunchOverlapper, this.enemiesGroup)
-        this.rightPunchOverlap = this.scene.physics.add.overlap(this.rightPunchOverlapper, this.enemiesGroup)
+        this.enemyHitboxes = []
+        for (let i = 0 ; i < enemies.length; i++) {
+            if (enemies[i].hitbox !== undefined) {
+                this.enemyHitboxes.push(enemies[i].hitbox)
+                enemies[i].hitbox.playerColliderIndex = null
+                enemies[i].hitbox.enemy = enemies[i]
+            } else {
+                this.enemyHitboxes.push(enemies[i].body)
+            }
+        }
 
         this.hitCollider = this.scene.physics.add.body(this.getTopLeft().x, this.getTopLeft().y, 60, 150).setOffset(0.0)
 
@@ -84,12 +92,12 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     }
 
     hurt(hp) {
-        console.log("Oof!")
         this.health -= hp
         this.addPoints(-1)
 
         if (this.health <= 0) {
             this.scene.sound.play("death")
+            this.scene.sound.stopAll()
             this.scene.scene.start("gameOverScene")
         } else {
             this.scene.sound.play("hit")
@@ -116,15 +124,23 @@ class Player extends Phaser.Physics.Arcade.Sprite {
      */
     doAttackHits(facingRight) {
         if (facingRight) {
-            this.scene.physics.overlap(this.rightPunchOverlapper, this.enemiesGroup, (object1, object2) => {
+            this.scene.physics.overlap(this.rightPunchOverlapper, this.enemyHitboxes, (object1, object2) => {
                 if (object2.playerColliderIndex !== undefined) {
-                    this.addPoints(object2.hurt(PLAYER_ATTACK_DAMAGE))
+                    if (object2.playerColliderIndex === null) {
+                        this.addPoints(object2.enemy.hurt(PLAYER_ATTACK_DAMAGE))
+                    } else {
+                        this.addPoints(object2.hurt(PLAYER_ATTACK_DAMAGE))
+                    }
                 }
             })
         } else {
-            this.scene.physics.overlap(this.leftPunchOverlapper, this.enemiesGroup, (object1, object2) => {
+            this.scene.physics.overlap(this.leftPunchOverlapper, this.enemyHitboxes, (object1, object2) => {
                 if (object2.playerColliderIndex !== undefined) {
-                    this.addPoints(object2.hurt(PLAYER_ATTACK_DAMAGE))
+                    if (object2.playerColliderIndex === null) {
+                        this.addPoints(object2.enemy.hurt(PLAYER_ATTACK_DAMAGE))
+                    } else {
+                        this.addPoints(object2.hurt(PLAYER_ATTACK_DAMAGE))
+                    }
                 }
             })
         }
@@ -237,4 +253,4 @@ const PLAYER_FIST_OFFSET = 81
 const PLAYER_FIST_HEIGHT = 36
 const PLAYER_ATTACK_RANGE = 64
 const PLAYER_ATTACK_DAMAGE = 1
-const PLAYER_MAX_HEALTH = 5
+const PLAYER_MAX_HEALTH = 10

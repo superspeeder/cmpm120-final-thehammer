@@ -9,8 +9,16 @@ class Thug extends Phaser.Physics.Arcade.Sprite {
         this.setOrigin(0.5, 1.0)
         this.body.setCollideWorldBounds(true)
 
+        this.body.setSize(64, this.height / 2)
+        this.body.setOffset((this.width - 64) / 2, this.height / 2)
+
+        this.hitbox = this.scene.physics.add.body(this.x, this.y, 76, this.height * 1.2)
+        this.hitbox.setOffset((this.width * 1.2 - 76) / 2, 0)
+
+        this.dead = false
+
         this.speed = 100
-        this.attackRange = 150
+        this.attackRange = 100
         this.hitCount = 0
         this.hp = 3
         this.hitCooldown = false
@@ -32,7 +40,7 @@ class Thug extends Phaser.Physics.Arcade.Sprite {
     }
 
     hurt(damage) {
-        if (!this.canBeHit) {
+        if (!this.canBeHit || this.dead) {
             return 0
         }
 
@@ -40,6 +48,7 @@ class Thug extends Phaser.Physics.Arcade.Sprite {
 
         if (this.hp <= 0) {
             this.disableBody()
+            this.hitbox.setEnable(false)
             this.fsm.transition("defeat")
         } else {
             this.fsm.transition("hurt")
@@ -49,12 +58,19 @@ class Thug extends Phaser.Physics.Arcade.Sprite {
     }
 
     update() {
+        if (this.dead) {
+            return
+        }
+
         if (this.hp <= 0 && this.fsm.state != "defeat") {
+            this.dead = true
             this.fsm.transition("defeat")
         }
-        
-        this.leftAttackCollider.position = new Phaser.Math.Vector2(this.getLeftCenter().x - this.attackRange / 2 - 1, this.getLeftCenter().y - 36)
-        this.rightAttackCollider.position = new Phaser.Math.Vector2(this.getRightCenter().x, this.getRightCenter().y - 36)
+
+        this.hitbox.position = new Phaser.Math.Vector2(this.body.x, this.body.y - this.body.height)
+
+        this.leftAttackCollider.position = new Phaser.Math.Vector2(this.body.left - this.attackRange / 2 - 1, this.getLeftCenter().y - 36)
+        this.rightAttackCollider.position = new Phaser.Math.Vector2(this.body.right, this.getRightCenter().y - 36)
 
         this.fsm.step();
     }
@@ -78,7 +94,9 @@ class Thug extends Phaser.Physics.Arcade.Sprite {
         })
 
         this.scene.time.delayedCall(300, () => {
-            this.fsm.transition('walk')
+            if (this.fsm.state != "defeat") {
+                this.fsm.transition('walk')
+            }
         })
         this.scene.time.delayedCall(700, () => {
             this.attackCooldown = false
@@ -104,6 +122,8 @@ class Thug extends Phaser.Physics.Arcade.Sprite {
 class IdleState extends State {
     enter(scene, thug) {
         thug.setVelocity(0)
+        // thug.body.setImmovable(false)
+
         // thug.anims.play(`idle-${thug.direction}`)
         // thug.anims.stop()
     }
@@ -121,7 +141,9 @@ class IdleState extends State {
 
 class WalkState extends State {
     enter(scene, thug) {
-        scene.physics.moveToObject(thug, scene.player, thug.speed)
+        let vel = new Phaser.Math.Vector2(scene.player.getCenter().x - thug.getCenter().x, scene.player.getCenter().y - thug.getCenter().y).normalize().scale(thug.speed)
+        thug.setVelocity(vel.x, vel.y)
+        // thug.body.setImmovable(false)
         
         if (scene.player.x < thug.getCenter().x) {
             thug.direction = "left"
@@ -133,7 +155,8 @@ class WalkState extends State {
     }
 
     execute(scene, thug) {
-        scene.physics.moveToObject(thug, scene.player, thug.speed)
+        let vel = new Phaser.Math.Vector2(scene.player.getCenter().x - thug.getCenter().x, scene.player.getCenter().y - thug.getCenter().y).normalize().scale(thug.speed)
+        thug.setVelocity(vel.x, vel.y)
         if (scene.player.x < thug.getCenter().x) {
             if (thug.direction != "left") {
                 thug.play("walk-left")
@@ -161,6 +184,7 @@ class AttackState extends State {
     enter(scene, thug) {
         thug.setVelocity(0, 0)
         thug.attackCooldown = true
+        // thug.body.setImmovable(true)
 
         if (scene.player.x < thug.getCenter().x) {
             thug.play("attack-left")
@@ -190,6 +214,8 @@ class HurtState extends State {
             thug.direction = "right"
             thug.play("hurt-right")
         }
+        
+        // thug.body.setImmovable(true)
 
         thug.canBeHit = false
 
@@ -207,6 +233,7 @@ class DefeatState extends State {
     enter(scene, thug) {
         thug.setVelocity(0)
         scene.sound.play("death")
+        // thug.body.setImmovable(true)
 
         if (scene.player.x < thug.getCenter().x) {
             thug.direction = "left"
@@ -216,6 +243,7 @@ class DefeatState extends State {
             thug.play("defeat-right")
         }
 
+        thug.dead = true
         thug.emit("dead")
     }
 }

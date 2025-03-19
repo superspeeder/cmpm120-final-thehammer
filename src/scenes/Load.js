@@ -35,11 +35,11 @@ class Load extends Phaser.Scene {
         })
       
         // TODO: load assets
-        this.load.aseprite("playerSprite", "textures/player1.png", "textures/player1.json")
-        this.load.image("level10", "textures/level10.png")
-        this.load.image("rock", "textures/rock.png")
+        this.load.aseprite("playerSprite", "sprite/player1.png", "sprite/player1.json")
+        this.load.image("level10", "sprite/level10.png")
+        this.load.image("rock", "sprite/rock.png")
 
-        this.load.spritesheet("healthbar", "textures/healthbar.png", { frameWidth: 80, frameHeight: 16 })
+        this.load.spritesheet("healthbar", "sprite/healthbar.png", { frameWidth: 80, frameHeight: 16 })
 
         this.load.audio("bgm", "music/bgm.wav")
         this.load.audio("hit", "music/hit.wav")

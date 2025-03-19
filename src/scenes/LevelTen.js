@@ -61,7 +61,7 @@ class LevelTen extends Phaser.Scene {
         this.healthBar = this.add.sprite(60, 60, "healthbar", 0).setOrigin(0).setScale(3)
     
         this.player.on("playerhurt", (newHealth) => {
-            this.healthBar.setFrame(PLAYER_MAX_HEALTH - newHealth)
+            this.healthBar.setFrame(Math.ceil((PLAYER_MAX_HEALTH - newHealth) / 2))
         })
 
         this.bgMusic = this.sound.add('bgm', {loop: true, volume: 0})
@@ -78,50 +78,7 @@ class LevelTen extends Phaser.Scene {
             this.enterWave2()
         })
 
-        this.thugCounter = 1
-
-        
-        let death_wave2f = () => {
-            this.thugCounter -= 1
-            if (this.thugCounter <= 0) {
-                this.tweens.add({
-                    targets: [this.wave2.thug1, this.wave2.thug2, this.wave2.thug3],
-                    y: '-=25',
-                    alpha: 0.0,
-                    ease: 'Cubic',
-                    duration: 1000,
-                    repeat: 0,
-                    yoyo: false,
-                    onComplete: () => {
-                        this.thug.body.setEnable(false)
-                        this.thug.setPosition(0, 0)
-                        this.thug.setVisible(false)
-                        
-                        this.wave2.thug1.setVisible(false)
-                        this.wave2.thug2.setVisible(false)
-                        this.wave2.thug3.setVisible(false)
-    
-                        this.wave2.thug1.setPosition(0, 0)
-                        this.wave2.thug2.setPosition(0, 0)
-                        this.wave2.thug3.setPosition(0, 0)
-
-                        if (this.thugCounter <= 0) {
-                            this.tweens.add({
-                                targets: [this.bgMusic],
-                                volume: 0,
-                                duration: 1, // instant
-                                ease: 'Linear'
-                            })
-                            this.scene.start("winScene")
-                        }
-                    }
-                })
-            }
-        };
-
-        this.wave2.thug1.on("dead", death_wave2f)
-        this.wave2.thug2.on("dead", death_wave2f)
-        this.wave2.thug3.on("dead", death_wave2f)
+        this.inWinEnd = false
 
         this.wave = 1
 
@@ -154,6 +111,10 @@ class LevelTen extends Phaser.Scene {
                 this.wave2.thug2.setVisible(true)
                 this.wave2.thug3.setVisible(true)
 
+                this.wave2.thug1.body.setEnable(true)
+                this.wave2.thug2.body.setEnable(true)
+                this.wave2.thug3.body.setEnable(true)
+
                 this.wave2.thug1.setAlpha(1.0)
                 this.wave2.thug2.setAlpha(1.0)
                 this.wave2.thug3.setAlpha(1.0)
@@ -162,7 +123,6 @@ class LevelTen extends Phaser.Scene {
                 this.wave2.thug2.setPosition(width + 144, Phaser.Math.Between(height / 2 + 64, height - 64))
                 this.wave2.thug3.setPosition(width + 272, Phaser.Math.Between(height / 2 + 64, height - 64))
                 this.wave = 2
-                this.thugCounter = 3
             }
         })
     }
@@ -170,6 +130,35 @@ class LevelTen extends Phaser.Scene {
     update() {
         // step(update) state machines
         this.player.update()
+
+        if (!this.inWinEnd && this.wave2.thug1.dead && this.wave2.thug2.dead && this.wave2.thug3.dead) {
+            this.inWinEnd = true
+            this.tweens.add({
+                targets: [this.wave2.thug1, this.wave2.thug2, this.wave2.thug3],
+                y: '-=25',
+                alpha: 0.0,
+                ease: 'Cubic',
+                duration: 1000,
+                repeat: 0,
+                yoyo: false,
+                onComplete: () => {
+                    this.thug.body.setEnable(false)
+                    this.thug.setPosition(0, 0)
+                    this.thug.setVisible(false)
+                    
+                    this.wave2.thug1.setVisible(false)
+                    this.wave2.thug2.setVisible(false)
+                    this.wave2.thug3.setVisible(false)
+
+                    this.wave2.thug1.setPosition(0, 0)
+                    this.wave2.thug2.setPosition(0, 0)
+                    this.wave2.thug3.setPosition(0, 0)
+
+                    this.sound.stopAll()
+                    this.scene.start("winScene")
+                }
+            })
+        }
 
         if (this.wave == 1) {
             this.thug.update()
