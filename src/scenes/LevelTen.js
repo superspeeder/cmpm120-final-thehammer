@@ -64,14 +64,6 @@ class LevelTen extends Phaser.Scene {
             this.healthBar.setFrame(Math.ceil((PLAYER_MAX_HEALTH - newHealth) / 2))
         })
 
-        this.bgMusic = this.sound.add('bgm', {loop: true, volume: 0})
-        this.bgMusic.play()
-        this.tweens.add({
-            targets: [this.mgMusic],
-            volume: {from: 0, to: 0.5},
-            duration: 1000, // 1-second fade-in
-            ease: 'Linear'
-        })
         this.sound.play("bgm", {loop: true, volume:0.5})
 
         this.thug.on("dead", () => {
