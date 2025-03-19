@@ -4,6 +4,8 @@ class Credits extends Phaser.Scene {
     }
 
     create() {
+        this.add.image(centerX, centerY, "sky").setScale(3.0)
+
         // text
         this.add.text(centerX, centerY*2/6, 'Created by', creditTextConfig).setOrigin(0.5)
         this.add.text(centerX*1/2, centerY*3/6, 'Andy Newton', creditTextConfig).setOrigin(0.5)

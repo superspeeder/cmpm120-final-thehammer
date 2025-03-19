@@ -17,7 +17,7 @@ class Load extends Phaser.Scene {
         
         // LOAD ASSETS
         this.load.path = './assets/'
-        // load audio
+
         // load fonts
         this.load.font('header', 'font/AlteHaasGroteskRegular.ttf')
         this.load.font('headerBold', 'font/AlteHaasGroteskBold.ttf')
@@ -34,13 +34,14 @@ class Load extends Phaser.Scene {
             frameHeight: 164
         })
       
-        // TODO: load assets
         this.load.aseprite("playerSprite", "sprite/player1.png", "sprite/player1.json")
         this.load.image("level10", "sprite/level10.png")
         this.load.image("rock", "sprite/rock.png")
+        this.load.image("sky", "sprite/cloudysky.png")
 
         this.load.spritesheet("healthbar", "sprite/healthbar.png", { frameWidth: 80, frameHeight: 16 })
 
+        // Load audio
         this.load.audio("bgm", "music/bgm.wav")
         this.load.audio("hit", "music/hit.wav")
         this.load.audio("death", "music/death.wav")
