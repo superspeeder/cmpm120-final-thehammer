@@ -21,11 +21,11 @@ class LevelTen extends Phaser.Scene {
         this.rocks.add(this.rock3)
 
         this.enemies = this.add.group()
-        this.thug = new Thug(this, 800, 600, 'animatetest').setScale(1.2)
+        this.thug = new Thug(this, 800, 600, 'thugAnimation').setScale(1.2)
         this.enemies.add(this.thug)
 
 
-        this.wave2 = {thug1: new Thug(this, 0, 0, 'animatetest').setScale(1.2), thug2: new Thug(this, 0, 0, 'animatetest').setScale(1.2), thug3: new Thug(this, 0, 0, 'animatetest').setScale(1.2)}
+        this.wave2 = {thug1: new Thug(this, 0, 0, 'thugAnimation').setScale(1.2), thug2: new Thug(this, 0, 0, 'thugAnimation').setScale(1.2), thug3: new Thug(this, 0, 0, 'thugAnimation').setScale(1.2)}
         this.wave2.thug1.body.setEnable(false)
         this.wave2.thug2.body.setEnable(false)
         this.wave2.thug3.body.setEnable(false)
@@ -64,6 +64,14 @@ class LevelTen extends Phaser.Scene {
             this.healthBar.setFrame(PLAYER_MAX_HEALTH - newHealth)
         })
 
+        this.bgMusic = this.sound.add('bgm', {loop: true, volume: 0})
+        this.bgMusic.play()
+        this.tweens.add({
+            targets: [this.mgMusic],
+            volume: {from: 0, to: 0.5},
+            duration: 1000, // 1-second fade-in
+            ease: 'Linear'
+        })
         this.sound.play("bgm", {loop: true, volume:0.5})
 
         this.thug.on("dead", () => {
@@ -98,6 +106,12 @@ class LevelTen extends Phaser.Scene {
                         this.wave2.thug3.setPosition(0, 0)
 
                         if (this.thugCounter <= 0) {
+                            this.tweens.add({
+                                targets: [this.bgMusic],
+                                volume: 0,
+                                duration: 1, // instant
+                                ease: 'Linear'
+                            })
                             this.scene.start("winScene")
                         }
                     }
