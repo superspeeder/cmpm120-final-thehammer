@@ -21,11 +21,11 @@ class LevelTen extends Phaser.Scene {
         this.rocks.add(this.rock3)
 
         this.enemies = this.add.group()
-        this.thug = new Thug(this, 800, 600, 'animatetest').setScale(8.0)
+        this.thug = new Thug(this, 800, 600, 'animatetest').setScale(1.2)
         this.enemies.add(this.thug)
 
 
-        this.wave2 = {thug1: new Thug(this, 0, 0, 'animatetest').setScale(8.0), thug2: new Thug(this, 0, 0, 'animatetest').setScale(8.0), thug3: new Thug(this, 0, 0, 'animatetest').setScale(8.0)}
+        this.wave2 = {thug1: new Thug(this, 0, 0, 'animatetest').setScale(1.2), thug2: new Thug(this, 0, 0, 'animatetest').setScale(1.2), thug3: new Thug(this, 0, 0, 'animatetest').setScale(1.2)}
         this.wave2.thug1.body.setEnable(false)
         this.wave2.thug2.body.setEnable(false)
         this.wave2.thug3.body.setEnable(false)

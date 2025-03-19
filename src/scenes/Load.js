@@ -30,7 +30,7 @@ class Load extends Phaser.Scene {
             frameHeight: 12,
         })
         this.load.spritesheet('thugAnimation', 'sprite/thug.png', {
-            frameWidth: 128,
+            frameWidth: 164,
             frameHeight: 164
         })
       
@@ -53,67 +53,79 @@ class Load extends Phaser.Scene {
         // idle
         this.anims.create({
             key: 'idle-left',
-            frameRate: 12,
+            frameRate: 8,
             repeat: -1,
-            frames: this.anims.generateFrameNumbers('thugAnimation', )
+            frames: [{key: 'thugAnimation', frame: 0}]
         })
         this.anims.create({
             key: 'idle-right',
-            frameRate: 12,
+            frameRate: 8,
             repeat: -1,
-            frames: this.anims.generateFrameNumbers('animatetest', { start: 3, end: 5})
+            frames: [{key: 'thugAnimation', frame: 1}]
         })
         // walk
         this.anims.create({
             key: 'walk-left',
-            frameRate: 12,
+            frameRate: 8,
             repeat: -1,
-            frames: this.anims.generateFrameNumbers('animatetest', { start: 6, end: 8})
+            frames: [
+                {key: 'thugAnimation', frame:0},
+                {key: 'thugAnimation', frame:2}
+            ]
         })
         this.anims.create({
             key: 'walk-right',
-            frameRate: 12,
+            frameRate: 8,
             repeat: -1,
-            frames: this.anims.generateFrameNumbers('animatetest', { start: 9, end: 11})
+            frames: [
+                {key: 'thugAnimation', frame:1},
+                {key: 'thugAnimation', frame:3}
+            ]
         })
         // attack
         this.anims.create({
             key: 'attack-left',
-            frameRate: 12,
+            frameRate: 8,
             repeat: -1,
-            frames: this.anims.generateFrameNumbers('animatetest', { start: 12, end: 14})
+            frames: [
+                {key: 'thugAnimation', frame:4},
+                {key: 'thugAnimation', frame:0}
+            ]
         })
         this.anims.create({
             key: 'attack-right',
-            frameRate: 12,
+            frameRate: 8,
             repeat: -1,
-            frames: this.anims.generateFrameNumbers('animatetest', { start: 15, end: 17})
+            frames: [
+                {key: 'thugAnimation', frame:5},
+                {key: 'thugAnimation', frame:1}
+            ]
         })
         // hurt
         this.anims.create({
             key: 'hurt-left',
-            frameRate: 12,
+            frameRate: 8,
             repeat: -1,
-            frames: this.anims.generateFrameNumbers('animatetest', { start: 18, end: 20})
+            frames: [{key:'thugAnimation', frame:6}]
         })
         this.anims.create({
             key: 'hurt-right',
-            frameRate: 12,
+            frameRate: 8,
             repeat: -1,
-            frames: this.anims.generateFrameNumbers('animatetest', { start: 21, end: 23})
+            frames: [{key:'thugAnimation', frame:7}]
         })
         // defeat
         this.anims.create({
             key: 'defeat-left',
-            frameRate: 12,
+            frameRate: 8,
             repeat: -1,
-            frames: this.anims.generateFrameNumbers('animatetest', { start: 24, end: 26})
+            frames: [{key:'thugAnimation', frame:8}]
         })
         this.anims.create({
             key: 'defeat-right',
             frameRate: 12,
             repeat: -1,
-            frames: this.anims.generateFrameNumbers('animatetest', { start: 27, end: 29})
+            frames: [{key:'thugAnimation', frame:9}]
         })
 
         // TODO: load main menu scene from here
