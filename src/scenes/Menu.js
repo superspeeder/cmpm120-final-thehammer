@@ -9,15 +9,15 @@ class Menu extends Phaser.Scene {
 
     create() {
         // Fire effect
-        let line = new Phaser.Geom.Line(0, height, width, height)
-        this.lineEmitter = this.add.particles(0, height, 'fire', {
-            gravityY: -150,
-            lifespan: 5000,
-            scale: {start: 10, end: 0.1},
+        let line = new Phaser.Geom.Line(0, centerY*1.1, width, centerY*1.1)
+        this.lineEmitter = this.add.particles(0, centerY*1.1, 'fire', {
+            gravityY: -300,
+            lifespan: 3000,
+            scale: {start: 5, end: 0.1},
             emitZone: {
                 type: 'random',
                 source: line,
-                quantity: 100
+                quantity: 50
             }
         })
 
